@@ -36,9 +36,9 @@ export class Chat extends AIChatAgent<Env> {
         role:"user",
         content: message,
       },]
-    const response = await env.AI.run("@cf/meta/llama-3.1-8b-instruct-fp8",
+    const response = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast",
       {messages});
-      return response.response
+      return response
   }
   /**
    * Handles incoming chat messages and manages the response stream
