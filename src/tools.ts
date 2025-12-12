@@ -97,11 +97,11 @@ const getRedditReccs = tool({
     var count  = 0
     var erl = ""
    try{
-      const url = `https://www.reddit.com/search.json?q=%22best+restaurant%22+${encodeURIComponent(city)}&limit=10&type=posts&sort=relevance&t=all`
+      const url = `https://oauth.reddit.com/search.json?q=%22best+restaurant%22+${encodeURIComponent(city)}&limit=10&type=posts&sort=relevance&t=all`
       count = 1
       const res = await fetch(url,{
         headers: {
-        "User-Agent": "script by u/tea-kettle5",
+        "User-Agent": "RestaurantRecommender/1.0 by u_tea-kettle5",
         "Accept": "application/json"
         }}
       );
@@ -117,13 +117,14 @@ const getRedditReccs = tool({
       let bodys =new Map<string,Array<String>>();
       count = 3
       for (const i of rlist){
-        const url = `https://www.reddit.com/r/${i.subreddit}/comments/${i.id}/${i.title}.json?sort=top&limit=30`
+        const url = `https://oauth.reddit.com/r/${i.subreddit}/comments/${i.id}/${i.title}.json?sort=top&limit=30`
         erl = url
         const res = await fetch(url,{
            headers: {
            "User-Agent": "script by u/tea-kettle5",
            "Accept": "application/json"
            }});
+           count = res.status
             const data = await res.json() as any;
           const arr =[data[0].data.children[0].data.selftext,data[1].data.children.slice(0,-1).map((p: { data:{body:string}; })  => (p.data.body))];
           bodys.set(i.title,arr);
