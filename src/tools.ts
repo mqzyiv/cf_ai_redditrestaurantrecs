@@ -95,6 +95,7 @@ const getRedditReccs = tool({
   execute: async({city},env) =>{
     const {agent} = getCurrentAgent<Chat>();
     var count  = 0
+    var erl = ""
    try{
       const url = `https://www.reddit.com/search.json?q=%22best+restaurant%22+${encodeURIComponent(city)}&limit=10&type=posts&sort=relevance&t=all`
       count = 1
@@ -104,6 +105,7 @@ const getRedditReccs = tool({
         "Accept": "application/json"
         }}
       );
+      erl = url
       const data = await res.json() as any;
       count =2
       const rlist = data.data.children.map((p: { data: { title: any; subreddit: any; id: any; }; })  => ({
@@ -116,6 +118,7 @@ const getRedditReccs = tool({
       count = 3
       for (const i of rlist){
         const url = `https://www.reddit.com/r/${i.subreddit}/comments/${i.id}/${i.title}.json?sort=top&limit=30`
+        erl = url
         const res = await fetch(url,{
            headers: {
            "User-Agent": "script by u/tea-kettle5",
@@ -135,7 +138,7 @@ const getRedditReccs = tool({
       return response?.valueOf()
     }catch(e){
       console.error(e);
-      return `error getting reddit recommendations: ${e} and ${count}`
+      return `error getting reddit recommendations: ${e} and ${count} and ${erl}`
     }
   }
 });
