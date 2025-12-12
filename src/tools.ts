@@ -128,7 +128,7 @@ const getRedditReccs = tool({
         "Examine the text and determine which 5 restaurants are mentioned weighing both by most positive mentions and return a resonse as a list"+jsonString
       );
       console.log(response);
-      return response
+      return response?.valueOf()
     }catch(e){
       console.error(e);
       return `error getting reddit recommendations: ${e}`
